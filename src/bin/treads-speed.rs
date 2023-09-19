@@ -23,7 +23,7 @@ fn main() {
     }
 
     for handle in handles {
-        handle.join();
+        handle.join().expect("Failed to join thread");
     }
     let opt1_elapsed = first_option.elapsed();
     println!("first_option, elapsed time: {:.2?}", opt1_elapsed);
@@ -32,7 +32,7 @@ fn main() {
     let second_option = Instant::now(); // Create new Instant object for each segment
 
     (0..10).map(do_work).for_each(|handle| {
-        handle.join();
+        handle.join().expect("Failed to join thread");
     });
     let opt2_elapsed = second_option.elapsed();
     println!("second_option, elapsed time: {:.2?}", opt2_elapsed);
@@ -43,7 +43,7 @@ fn main() {
     let handles: Vec<_> = (0..10).map(do_work).collect();
     //  for_each would be much cleaner as a simple for loop
     handles.into_iter().for_each(move |handle| {
-        handle.join();
+        handle.join().expect("Failed to join thread");
     });
     let opt3_elapsed = third_option.elapsed();
     println!("third_option,  elapsed time: {:.2?}", opt3_elapsed);
