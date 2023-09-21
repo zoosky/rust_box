@@ -1,5 +1,6 @@
 use std::thread;
 use std::time;
+use std::time::Duration;
 use std::time::Instant;
 
 fn do_work(i: usize) -> thread::JoinHandle<()> {
@@ -36,30 +37,31 @@ fn run_opt3(num_threads: usize) {
     });
 }
 
+fn time_to_run<F, D>(func: F) -> Duration
+where
+    F: FnOnce() -> D,
+{
+    let start = Instant::now();
+    let _result = func();
+    let end = Instant::now();
+    end.duration_since(start)
+}
+
 fn main() {
     const NUM_THREADS: usize = 10;
 
     let start = Instant::now();
 
     print!("First option");
-    let first_option = Instant::now();
-    run_op1(NUM_THREADS);
-
-    let opt1_elapsed = first_option.elapsed();
+    let opt1_elapsed = time_to_run(|| run_op1(NUM_THREADS));
     println!("first_option, elapsed time: {:.2?}", opt1_elapsed);
 
-    print!("Second option");
-    let second_option = Instant::now(); // Create new Instant object for each segment
-
-    run_opt2(NUM_THREADS);
-
-    let opt2_elapsed = second_option.elapsed();
+    println!("Second option");
+    let opt2_elapsed = time_to_run(|| run_opt2(NUM_THREADS));
     println!("second_option, elapsed time: {:.2?}", opt2_elapsed);
 
-    print!("Third option");
-    let third_option = Instant::now();
-    run_opt3(NUM_THREADS);
-    let opt3_elapsed = third_option.elapsed();
+    println!("Third option");
+    let opt3_elapsed = time_to_run(|| run_opt3(NUM_THREADS));
     println!("third_option,  elapsed time: {:.2?}", opt3_elapsed);
 
     let elapsed = start.elapsed();
