@@ -10,14 +10,9 @@ fn do_work(i: usize) -> thread::JoinHandle<()> {
     })
 }
 
-fn main() {
+fn run_op1(num_threads: usize) {
     let mut handles = Vec::new();
-    let start = Instant::now();
-
-    print!("First option");
-    let first_option = Instant::now();
-
-    for i in 0..10 {
+    for i in 0..num_threads {
         let handle = do_work(i);
         handles.push(handle);
     }
@@ -25,26 +20,45 @@ fn main() {
     for handle in handles {
         handle.join().expect("Failed to join thread");
     }
+}
+
+fn run_opt2(num_threads: usize) {
+    (0..num_threads).map(do_work).for_each(|handle| {
+        handle.join().expect("Failed to join thread");
+    });
+}
+
+fn run_opt3(num_threads: usize) {
+    let handles: Vec<_> = (0..num_threads).map(do_work).collect();
+    //  for_each would be much cleaner as a simple for loop
+    handles.into_iter().for_each(move |handle| {
+        handle.join().expect("Failed to join thread");
+    });
+}
+
+fn main() {
+    const NUM_THREADS: usize = 10;
+
+    let start = Instant::now();
+
+    print!("First option");
+    let first_option = Instant::now();
+    run_op1(NUM_THREADS);
+
     let opt1_elapsed = first_option.elapsed();
     println!("first_option, elapsed time: {:.2?}", opt1_elapsed);
 
     print!("Second option");
     let second_option = Instant::now(); // Create new Instant object for each segment
 
-    (0..10).map(do_work).for_each(|handle| {
-        handle.join().expect("Failed to join thread");
-    });
+    run_opt2(NUM_THREADS);
+
     let opt2_elapsed = second_option.elapsed();
     println!("second_option, elapsed time: {:.2?}", opt2_elapsed);
 
-
     print!("Third option");
     let third_option = Instant::now();
-    let handles: Vec<_> = (0..10).map(do_work).collect();
-    //  for_each would be much cleaner as a simple for loop
-    handles.into_iter().for_each(move |handle| {
-        handle.join().expect("Failed to join thread");
-    });
+    run_opt3(NUM_THREADS);
     let opt3_elapsed = third_option.elapsed();
     println!("third_option,  elapsed time: {:.2?}", opt3_elapsed);
 
