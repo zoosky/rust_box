@@ -3,6 +3,8 @@ use std::time;
 use std::time::Duration;
 use std::time::Instant;
 
+const NUM_THREADS: usize = 15;
+
 fn do_work(i: usize) -> thread::JoinHandle<()> {
     thread::spawn(move || {
         let duration = time::Duration::from_millis(100);
@@ -48,22 +50,20 @@ where
 }
 
 fn main() {
-    const NUM_THREADS: usize = 10;
-
     let start = Instant::now();
 
     print!("First option");
     let opt1_elapsed = time_to_run(|| run_op1(NUM_THREADS));
-    println!("first_option, elapsed time: {:.2?}", opt1_elapsed);
+    println!("first_option, elapsed time: {:.2?} \n", opt1_elapsed);
 
     println!("Second option");
     let opt2_elapsed = time_to_run(|| run_opt2(NUM_THREADS));
-    println!("second_option, elapsed time: {:.2?}", opt2_elapsed);
+    println!("second_option, elapsed time: {:.2?} \n", opt2_elapsed);
 
     println!("Third option");
     let opt3_elapsed = time_to_run(|| run_opt3(NUM_THREADS));
-    println!("third_option,  elapsed time: {:.2?}", opt3_elapsed);
+    println!("third_option,  elapsed time: {:.2?} \n", opt3_elapsed);
 
     let elapsed = start.elapsed();
-    println!("Elapsed time: {:.2?}", elapsed);
+    println!("Total elapsed time: {:.2?}", elapsed);
 }
