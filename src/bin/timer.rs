@@ -21,10 +21,7 @@ fn how_long() -> u128 {
 }
 
 fn main() {
-    let (sum, elapsed_time) = timer(|| {
-        let sum = how_long();
-        sum
-    });
+    let (sum, elapsed_time) = timer(how_long);
 
     println!("Sum: {}", format_number(sum));
     println!("Elapsed time: {:.2?}", format_duration(elapsed_time));
