@@ -11,3 +11,8 @@ cargo run --bin treads_speed
 Documentation
 
     cargo doc --no-deps --open
+
+
+Benchmarking
+
+    cargo bench
