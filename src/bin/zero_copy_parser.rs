@@ -3,8 +3,8 @@ pub struct ParsedData<'a> {
     pub payload: &'a str,
 }
 
-impl<'a> ParsedData<'a> {
-    pub fn parse(data: &'a [u8]) -> ParsedData<'a> {
+impl ParsedData<'_> {
+    pub fn parse(data: &[u8]) -> ParsedData {
         let header = data[0];
 
         let payload = std::str::from_utf8(&data[1..data.len()]).unwrap();
