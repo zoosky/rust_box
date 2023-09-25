@@ -15,4 +15,4 @@ Documentation
 
 Benchmarking
 
-    cargo bench
+    cargo bench --bench 

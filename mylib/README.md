@@ -1,0 +1,5 @@
+# mylib
+
+Benchmarks
+
+    cargo bench
