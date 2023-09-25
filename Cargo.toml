@@ -3,6 +3,11 @@ name = "rust_box"
 version = "0.1.0"
 edition = "2021"
 
+authors = ["Zoo Sky <zoosky@gmail.com>"]
+# specify default `cargo run`
+default-run = "main"
+
+
 [registries.crates-io]
 protocal = "sparse"
 
@@ -11,3 +16,12 @@ protocal = "sparse"
 [dependencies]
 num-format = {version = "0.4.4", features = ["with-system-locale"]}
 thousands = "0.2.0"
+
+[package.metadata]
+# Specify the minimum Rust version here
+rust = "1.72.1"
+
+# Specify the default binary to run when using `cargo run`
+[[bin]]
+name = "main"
+path = "src/main.rs"
