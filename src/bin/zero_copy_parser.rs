@@ -1,14 +1,13 @@
 pub struct ParsedData {
     pub header: u8,
-    pub payload: String,
+    pub payload: &str,
 }
 
 impl ParsedData {
     pub fn parse(data: &[u8]) -> ParsedData {
         let header = data[0];
 
-        let payload_bytes = data[1..data.len()].to_vec();
-        let payload = String::from_utf8(payload_bytes).unwrap();
+        let payload = std::str::from_utf8(&data[1..data.len()]).unwrap();
 
         ParsedData { header, payload }
     }
