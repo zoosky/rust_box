@@ -7,3 +7,7 @@ Run
 ```sh
 cargo run --bin treads_speed
 ```
+
+Documentation
+
+    cargo doc --no-deps --open
